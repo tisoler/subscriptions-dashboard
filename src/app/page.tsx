@@ -1,9 +1,14 @@
-'use client';
-import styled from 'styled-components'
-import { Subscription } from '@/types';
+'use client'
+
+import { Subscription } from '@/types'
 import styles from './page.module.css'
-import Card from '@/components/card';
-import { useState } from 'react';
+import Card from '../components/card'
+import { useState } from 'react'
+import { Domine } from 'next/font/google'
+
+const domine = Domine({
+  subsets: ['latin'],
+})
 
 const INITIAL_SUBSCRIPTIONS = [
   {
@@ -23,11 +28,39 @@ const INITIAL_SUBSCRIPTIONS = [
     paymentMethod: 'ending in 4335',
     totalDonated: 0,
     firstDonation: '2022-02-15'
+  },
+  {
+    id: 3,
+    amount: 250,
+    interval: 'Monthly',
+    nextDonation: '2023-04-12',
+    paymentMethod: 'ending in 4335',
+    totalDonated: 0,
+    firstDonation: '2022-02-15'
+  },
+  {
+    id: 4,
+    amount: 2500,
+    interval: 'Monthly',
+    nextDonation: '2023-04-12',
+    paymentMethod: 'ending in 4335',
+    totalDonated: 0,
+    firstDonation: '2022-02-15'
+  },
+  {
+    id: 5,
+    amount: 500,
+    interval: 'Monthly',
+    nextDonation: '2023-04-12',
+    paymentMethod: 'ending in 4335',
+    totalDonated: 0,
+    firstDonation: '2022-02-15'
   }
 ]
 
 export default function Home() {
   const [subscriptions, setSubcriptions] = useState<Subscription[]>(INITIAL_SUBSCRIPTIONS)
+  const [quantityDiplayed, setQuantityDiplayed] = useState<number>(2)
 
   const onSave = (subscription: Subscription) => {
     setSubcriptions(prevState => (
@@ -40,26 +73,12 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      <TitleContainer><Title>Subscriptions</Title></TitleContainer>
-      {subscriptions.sort((a, b) => a.id - b.id).map(subscription => (
-        <Card key={subscription.id} subscription={subscription} onSave={onSave} />
+      <div className={styles.titleContainer}><h1 className={`${domine.className} ${styles.title}`}>Subscriptions</h1></div>
+      {subscriptions.sort((a, b) => a.id - b.id).map((subscription: Subscription, idx: number) => (
+        <Card key={subscription.id} subscription={subscription} visible={idx + 1 <= quantityDiplayed} onSave={onSave} />
       ))}
+      <button className={styles.showMoreButton} onClick={() => setQuantityDiplayed(prevState => prevState < subscriptions.length ? prevState + 2 : prevState)}>Show More</button>
+      <button className={styles.showMoreButton} onClick={() => setQuantityDiplayed(prevState => prevState - 2 >= 2 ? prevState - 2 : 2)}>Show Less</button>
     </main>
   )
 }
-
-const TitleContainer = styled.div`
-  display: flex;
-  width: 582px;
-  margin-bottom: 18px;
-  padding-left: 2.1rem;
-`
-
-const Title = styled.h1`
-  font-family: Domine;
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 32px;
-  letter-spacing: 0px;
-  text-align: left;
-`

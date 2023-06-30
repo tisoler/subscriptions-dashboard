@@ -36,6 +36,13 @@
   --callout-border-rgb: 172, 175, 176;
   --card-rgb: 180, 185, 188;
   --card-border-rgb: 131, 134, 135;
+
+  --card-label-color: #212121;
+  --card-link-color: #5DB9FE;
+  --color-white: #ffffff;
+  --card-border-color: #a6a6a6;
+  --card-button-color: #5DB9FE;
+  --card-button-active-color: #2a71a8;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -95,14 +102,4 @@ a {
   html {
     color-scheme: dark;
   }
-}
-
-@font-face {
-  font-family: 'Libre Franklin';
-  src: local('Libre Franklin'), url(../fonts/LibreFranklin-VariableFont_wght.ttf) format('woff');
-}
-
-@font-face {
-  font-family: 'Domine';
-  src: local('Domine'), url(../fonts/Domine-VariableFont_wght.ttf) format('woff');
 }

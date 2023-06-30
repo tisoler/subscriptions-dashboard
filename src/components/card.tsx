@@ -1,8 +1,14 @@
-'use client';
-import styled from 'styled-components'
-import { CARD_LABEL_COLOR, CARD_LINK_COLOR, INTERVAL_VALUES } from '../constants';
-import { Subscription } from '@/types';
-import { useState } from 'react';
+'use client'
+
+import { INTERVAL_VALUES } from '../constants'
+import { Subscription } from '@/types'
+import { useState } from 'react'
+import { Libre_Franklin } from 'next/font/google'
+import styles from './card.module.css'
+
+const libreFranklin = Libre_Franklin({
+  subsets: ['latin'],
+})
 
 interface CardRowProps {
 	label: string,
@@ -12,11 +18,6 @@ interface CardRowProps {
 	isCurrency?: boolean,
 	options?: string[]
 	isDate?: boolean
-}
-
-interface CardProps {
-	subscription: Subscription,
-	onSave: (subscription: Subscription) => void,
 }
 
 function CardRow(props: CardRowProps) {
@@ -60,53 +61,59 @@ function CardRow(props: CardRowProps) {
 	}
 	
   return (
-		<CardRowContainer>
-			<CardColumn>
-				<CardLabel>{label}:</CardLabel>
-			</CardColumn>
-			<CardColumn columnwidth={60}>
+		<div className={`${styles.cardRowContainer} ${libreFranklin.className}`}>
+			<div className={styles.cardColumn} style={{ width: '40%' }}>
+				<span className={styles.cardLabel}>{label}:</span>
+			</div>
+			<div className={styles.cardColumn} style={{ width: '60%' }}>
 				{
 					!isEditing ?
 					<>
-						<CardValue>{`${isCurrency ? '$' : ''}${displayValue}`}</CardValue>
-						{ editable && <CardValueEditLink onClick={editValue}>Edit</CardValueEditLink> }
+						<span className={styles.cardValue}>{`${isCurrency ? '$' : ''}${displayValue}`}</span>
+						{ editable && <span className={styles.cardValueEditLink} onClick={editValue}>Edit</span> }
 					</>
 					: 
 					<>
 						{ options?.length
 								? (
-									<CardValueDropDown
+									<select className={styles.cardValueDropDown}
 										value={`${isCurrency ? '$' : ''}${newValue}`}
 										onChange={onChange}
 									>
 										{ options.map(option => <option key={option}>{option}</option>) }
-									</CardValueDropDown>
+									</select>
 								)
 								: (
-									<CardValueInput
+									<input className={`${styles.cardValueInput} ${libreFranklin.className}`}
 										type={isDate ? 'date' : 'text'}
 										value={`${isCurrency ? '$' : ''}${editableValue}`}
 										onChange={onChange}
 									/>
 								)
 						}
-						<CardValueButton onClick={saveValue}>Save</CardValueButton>
-						<CardValueButton onClick={cancel}>Cancel</CardValueButton>
+						<button className={styles.cardValueButton} onClick={saveValue}>Save</button>
+						<button className={styles.cardValueButton} onClick={cancel}>Cancel</button>
 					</>
 				}
-			</CardColumn>
-		</CardRowContainer>
+			</div>
+		</div>
   )
 }
 
+interface CardProps {
+	subscription: Subscription,
+	onSave: (subscription: Subscription) => void,
+	visible: boolean,
+}
+
 export default function Card(props: CardProps) {
-	const { subscription, onSave } = props
+	const { subscription, onSave, visible } = props
 	const totalDonated = !subscription.totalDonated
 		? '$0'
 		: `$${subscription.totalDonated} since ${new Date(subscription.firstDonation).toLocaleDateString('en-US', { year:"numeric", month:"short", day:"numeric"})}`
 
   return (
-		<CardContainer>
+		<div className={styles.cardContainer} style={{ display: visible ? 'flex' : 'none '}}>
 			<CardRow
 				label='Amount'
 				value={subscription.amount}
@@ -142,100 +149,6 @@ export default function Card(props: CardProps) {
 			/>
 			<CardRow label='Payment method' value={subscription.paymentMethod} editable={false}></CardRow>
 			<CardRow label='Total donated' value={totalDonated} editable={false}></CardRow>
-		</CardContainer>
+		</div>
   )
 }
-
-const CardContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 582px;
-  height: 288px;
-  border-radius: 8px;
-  padding: 2rem 2rem;
-  background-color: #fff;
-	margin-bottom: 15px;
-	box-shadow: 0px 2px 2px 0px #0000001F;
-	font-family: Libre Franklin;
-  font-size: 16px;
-`
-
-const CardRowContainer = styled.div`
-  display: flex;
-	align-items: center;
-	height: 40px;
-  width: 100%;
-`
-
-const CardColumn = styled.div<{ columnwidth?: number }>`
-  display: flex;
-  justify-content: flex-start;
-  width: ${props => props.columnwidth ?? 40}%;
-`
-
-const CardLabel = styled.span`
-  font-weight: 600;
-  line-height: 24px;
-  letter-spacing: 0px;
-  text-align: left;
-  color: ${CARD_LABEL_COLOR}
-  margin-right: 
-`
-
-const CardValue = styled.span`
-  font-weight: 400;
-  line-height: 24px;
-  letter-spacing: 0px;
-  text-align: left;
-  color: ${CARD_LABEL_COLOR}
-`
-
-const CardValueEditLink = styled.span`
-  font-weight: 600;
-  line-height: 24px;
-  letter-spacing: 0px;
-  text-align: left;
-  color: ${CARD_LINK_COLOR};
-  text-decoration: underline;
-  cursor: pointer;
-  margin-left: 5px;
-`
-
-const CardValueDropDown = styled.select`
-	width: 172px;
-	height: 40px;
-	border-radius: 4px;
-	border: 1px;
-	linear-gradient(0deg, #FFFFFF, #FFFFFF);
-	border: 1px solid #A6A6A6;
-	padding-left: 10px;
-  font-size: 16px;
-`
-
-const CardValueInput = styled.input`
-	width: 172px;
-	height: 40px;
-	border-radius: 4px;
-	border: 1px;
-	linear-gradient(0deg, #FFFFFF, #FFFFFF);
-	border: 1px solid #A6A6A6;
-	padding-left: 10px;
-  font-size: 16px;
-`
-
-const CardValueButton = styled.button`
-	width: 60px;
-	height: 40px;
-	border-radius: 4px;
-	font-size: 14px;
-	font-weight: 600;
-	line-height: 21px;
-	letter-spacing: 0px;
-	text-align: center;
-	background-color: #5DB9FE;
-	border: none;
-	margin-left: 5px;
-	cursor: pointer;
-	color: #fff;
-`
