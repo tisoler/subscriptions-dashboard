@@ -16,7 +16,7 @@ interface CardRowProps {
 	onSave?: (newValue: number | string) => void,
 	editable?: boolean,
 	isCurrency?: boolean,
-	options?: string[]
+	options?: { id: number, description: string }[]
 	isDate?: boolean
 }
 
@@ -80,7 +80,9 @@ function CardRow(props: CardRowProps) {
 										value={`${isCurrency ? '$' : ''}${newValue}`}
 										onChange={onChange}
 									>
-										{ options.map(option => <option key={option}>{option}</option>) }
+										{ options.map(option =>
+											<option key={option.id} value={option.id}>{option.description}</option>
+										) }
 									</select>
 								)
 								: (
@@ -127,13 +129,19 @@ export default function Card(props: CardProps) {
 			/>
 			<CardRow
 				label='Interval'
-				value={subscription.interval}
-				onSave={(newValue: number | string) => onSave(
-					{
-						...subscription,
-						interval: newValue.toString()
-					}
-				)}
+				value={subscription.interval?.description}
+				onSave={(newValue: number | string) => {
+					const intervalId = parseInt(newValue.toString())
+					onSave(
+						{
+							...subscription,
+							interval: {
+								id: intervalId,
+								description: INTERVAL_VALUES.find(inter => inter.id === intervalId)?.description || ''
+							}
+						}
+					)}
+				}
 				options={INTERVAL_VALUES}
 			/>
 			<CardRow
@@ -147,7 +155,7 @@ export default function Card(props: CardProps) {
 				)}
 				isDate
 			/>
-			<CardRow label='Payment method' value={subscription.paymentMethod} editable={false}></CardRow>
+			<CardRow label='Payment method' value={subscription.paymentMethod?.description} editable={false}></CardRow>
 			<CardRow label='Total donated' value={totalDonated} editable={false}></CardRow>
 		</div>
   )
