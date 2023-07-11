@@ -8,18 +8,13 @@ export type PaymentMethod = {
 	description: string,
 }
 
-export type CreditCardBrand = {
-	id: number,
-	description: string,
-}
-
 export type Subscription = {
 	id: number,
 	amount: number,
 	interval: Interval,
-	nextDonation: string,
+	nextDonation: Date,
 	paymentMethod: PaymentMethod,
-	creditCardBrand: CreditCardBrand,
 	totalDonated: number,
-	firstDonation: string,
+	firstDonationDate: Date,
+	endingCardNumber: number,
 }
