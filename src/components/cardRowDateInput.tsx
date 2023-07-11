@@ -7,9 +7,21 @@ const libreFranklin = Libre_Franklin({
 })
 
 interface CardRowDateInputProps {
+	/**
+   * Input label value
+   */
 	label: string,
+	/**
+   * Input date value
+   */
 	value: Date,
+	/**
+   * Min date value allowed (optional)
+   */
 	min?: string | number | undefined,
+	/**
+   * Function to trigger when save button in clicked (optional)
+   */
 	onSave?: (newValue: Date) => void,
 }
 
@@ -63,16 +75,14 @@ function CardRowDateInput(props: CardRowDateInputProps) {
 		if (newDatevalue.toDateString() === today.toDateString()) newDatevalue.setTime(today.getTime())
 
 		setNewValue(newDatevalue)
-		setDisplayedDateValue(getDisplayedDateValue(newDatevalue))
-		setEditableDateValue(getEditableDateValue(newDatevalue))
 	}
 
 	useEffect(() => {
-		const newDatevalue = value ? new Date(newValue) : new Date()
+		const newDatevalue = newValue ? new Date(newValue) : new Date()
 		// dates come from the server (DB) in local time, it applies the time zone offset automatically
 		setDisplayedDateValue(getDisplayedDateValue(newDatevalue))
 		setEditableDateValue(getEditableDateValue(newDatevalue))
-	}, [])
+	}, [newValue])
 	
   return (
 		<div className={`${styles.cardRowContainer} ${libreFranklin.className}`}>

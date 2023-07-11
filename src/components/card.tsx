@@ -1,21 +1,32 @@
 
-import { Interval, Subscription } from '@/types'
+import { Interval, Subscription } from '../types'
 import styles from './card.module.css'
 import CardRowTextInput from './cardRowTextInput'
 import CardRowDateInput from './cardRowDateInput'
 import CardRowSelect from './cardRowSelect'
 import { useState } from 'react'
-import { PAYMENT_METHOD, PAYMENT_METHOD_GOOGLEPAY, PAYMENT_METHOD_PAYPAL } from '@/constants'
-import { getPaymentMethod } from '@/helper'
+import { getPaymentMethod } from '../helper'
 
 interface CardProps {
+	/**
+   * Subscription object
+   */
 	subscription: Subscription,
+	/**
+   * Interval options array
+   */
 	intervals: Interval[],
+	/**
+   * Function to trigger when save button in clicked
+   */
 	onSave: (subscription: Subscription) => Promise<boolean>,
+	/**
+   * Flag to show or hide the card
+   */
 	visible: boolean,
 }
 
-export default function Card(props: CardProps) {
+function Card(props: CardProps) {
 	const { subscription, intervals, onSave, visible } = props
 	const firstDonationDate = new Date(subscription.firstDonationDate)
 	const [isSaving, setIsSaving] = useState<boolean>(false)
@@ -93,3 +104,5 @@ export default function Card(props: CardProps) {
 		</div>
   )
 }
+
+export default Card

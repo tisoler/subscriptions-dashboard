@@ -12,3 +12,4 @@ export enum PAYMENT_METHOD {
 
 export const PAYMENT_METHOD_PAYPAL = 'PayPal'
 export const PAYMENT_METHOD_GOOGLEPAY = 'Google Pay'
+export const MISSING_CARD_NUMBER = 'Missing card number'

@@ -8,9 +8,21 @@ const libreFranklin = Libre_Franklin({
 })
 
 interface CardRowSelectProps {
+	/**
+   * Select label value
+   */
 	label: string,
+	/**
+   * Selected value
+   */
 	value: string | number,
+	/**
+   * Dropdownlist options
+   */
 	options: { id: number, description: string }[],
+	/**
+   * Function to trigger when save button in clicked (optional)
+   */
 	onSave?: (newValue: number | string) => void,
 }
 

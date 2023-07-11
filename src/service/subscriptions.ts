@@ -1,4 +1,4 @@
-import { Subscription } from "@/types"
+import { Subscription } from "../types"
 
 export const getSubscriptions = async (): Promise<Subscription[] | null> => {
   try {

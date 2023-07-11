@@ -7,11 +7,29 @@ const libreFranklin = Libre_Franklin({
 })
 
 interface CardRowTextInputProps {
+	/**
+   * Input label value
+   */
 	label: string,
+	/**
+   * Input value
+   */
 	value: string | number,
+	/**
+   * Function to trigger when save button in clicked (optional)
+   */
 	onSave?: (newValue: number | string) => void,
+	/**
+   * Set if it is read only or not (optional)
+   */
 	editable?: boolean,
+	/**
+   * Set if it is a currency value (optional)
+   */
 	isCurrency?: boolean,
+	/**
+   * Show an icon before the input (optional)
+   */
 	icon?: ReactElement | null,
 }
 
