@@ -2,7 +2,13 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+First, install all dependencies:
+
+```bash
+yarn install
+```
+
+Then, run the development server locally:
 
 ```bash
 npm run dev
@@ -14,21 +20,33 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Other scripts:
 
-To learn more about Next.js, take a look at the following resources:
+You can run this one to generate the files to be deployed. Files will be placed in the folder .next
+``` bash
+yarn build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+You can run theapp from the built files runnig:
+``` bash
+yarn start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+This project includes EsLint so you can check for lint errors or warnings running:
+``` bash
+yarn lint
+```
 
-## Deploy on Vercel
+This project implements storybook in order to verify the look and feels of the components,
+also to make sure that all of them are working properly.
+To run storybook and check the UI components in the storybook site yo have to execute:
+``` bash
+yarn storybook
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Environment variables:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+You have to include a file called ```.env.local``` that contains the env variables, they have to start with prefix ```NEXT_PUBLIC```
+You can take the file content from ```.env.example```, the key ```NEXT_PUBLIC_BACKEND_URL``` is required.
